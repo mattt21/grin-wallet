@@ -101,8 +101,14 @@ pub struct TorProcess {
 
 impl TorProcess {
 	pub fn new() -> Self {
+		let current_path = &env::current_dir().unwrap().into_os_string().into_string().unwrap();
+		let current_path_w_tor = &Path::new(current_path).join(TOR_EXE_NAME.to_string()).into_os_string().into_string().unwrap();
+		warn!(
+			"Tor Directory is in {:?} {:?}",
+			current_path_w_tor.to_string(), TOR_EXE_NAME.to_string()
+		);
 		TorProcess {
-			tor_cmd: TOR_EXE_NAME.to_string(),
+			tor_cmd: current_path_w_tor.to_string(),
 			args: vec![],
 			torrc_path: None,
 			completion_percent: 100 as u8,
