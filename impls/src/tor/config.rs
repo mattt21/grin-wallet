@@ -179,14 +179,14 @@ pub fn output_torrc(
 ) -> Result<(), Error> {
 	let torrc_file_path = format!("{}{}{}", tor_config_directory, MAIN_SEPARATOR, TORRC_FILE);
 
-	let tor_data_dir = format!("./{}", TOR_DATA_DIR);
+	let tor_data_dir = format!("{}/{}", tor_config_directory, TOR_DATA_DIR);
 
 	let mut props = TorRcConfig::new();
 	props.add_item("SocksPort", socks_port);
 	props.add_item("DataDirectory", &tor_data_dir);
 
 	for dir in service_dirs {
-		let service_file_name = format!("./{}{}{}", HIDDEN_SERVICES_DIR, MAIN_SEPARATOR, dir);
+		let service_file_name = format!("{}/{}{}{}", tor_config_directory, HIDDEN_SERVICES_DIR, MAIN_SEPARATOR, dir);
 		props.add_item("HiddenServiceDir", &service_file_name);
 		props.add_item("HiddenServicePort", &format!("80 {}", wallet_listener_addr));
 	}
